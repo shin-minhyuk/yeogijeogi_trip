@@ -1,3 +1,9 @@
+import CommonLayout from "../layouts/CommonLayout";
+
 export default function Search() {
-  return <h1>Search</h1>;
+  return (
+    <CommonLayout>
+      <h1>Search</h1>
+    </CommonLayout>
+  );
 }
