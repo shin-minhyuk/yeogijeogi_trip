@@ -3,7 +3,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import Festival from "./pages/Festival";
 import Content from "./pages/Content";
-import Search from "./pages/Search";
+import Search from "./pages/Search/Search";
 
 function App() {
   return (
