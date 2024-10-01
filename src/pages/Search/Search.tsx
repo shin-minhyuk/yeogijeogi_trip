@@ -1,104 +1,52 @@
 import CommonLayout from "../../layouts/CommonLayout";
-import { useLocation, useSearchParams } from "react-router-dom";
-import { SearchModal } from "../../components/SearchModal";
+import { useSearchParams } from "react-router-dom";
 import { Card } from "../../components/Card";
 import { Post } from "../../types";
-import { useEffect } from "react";
-import { fetchSearchData } from "../../api/fetchSearchData";
+import { useEffect, useState } from "react";
+
+const { VITE_ENCODED_API_KEY } = import.meta.env;
 
 const Search = () => {
-  const location = useLocation();
   const [searchParams] = useSearchParams();
   const search = searchParams.get("q");
+  const [data, setData] = useState<Post[]>([]);
 
   useEffect(() => {
-    if (search) {
-      fetchSearchData(search);
-    }
+    const fetchData = async () => {
+      try {
+        const res = await fetch(
+          `https://apis.data.go.kr/B551011/KorService1/searchKeyword1?serviceKey=${VITE_ENCODED_API_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&keyword=${search}&contentTypeId=12`
+        );
+
+        if (!res.ok) {
+          throw new Error("서버 통신 중 문제가 발생했습니다.");
+        }
+
+        const result = await res.json();
+        const { item } = result.response.body.items;
+        setData(item);
+        console.log(item);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
   }, [search]);
 
-  const data: Post[] = [
-    {
-      id: 1,
-      title: "제목1",
-      content: "내용1",
-    },
-    {
-      id: 2,
-      title: "제목2",
-      content: "내용2",
-    },
-    {
-      id: 3,
-      title: "제목3",
-      content: "내용3",
-    },
-    {
-      id: 1,
-      title: "제목1",
-      content: "내용1",
-    },
-    {
-      id: 2,
-      title: "제목2",
-      content: "내용2",
-    },
-    {
-      id: 3,
-      title: "제목3",
-      content: "내용3",
-    },
-    {
-      id: 1,
-      title: "제목1",
-      content: "내용1",
-    },
-    {
-      id: 2,
-      title: "제목2",
-      content: "내용2",
-    },
-    {
-      id: 3,
-      title: "제목3",
-      content: "내용3",
-    },
-    {
-      id: 1,
-      title: "제목1",
-      content: "내용1",
-    },
-    {
-      id: 2,
-      title: "제목2",
-      content: "내용2",
-    },
-  ];
-
-  if (location.search === "") {
-    return (
-      <CommonLayout>
-        <SearchModal />
-      </CommonLayout>
-    );
-  }
-
-  if (location.search.includes("?q=")) {
-    return (
-      <CommonLayout>
-        <article className='max-w-[1200px] mx-auto max-2xl:max-w-[1200px]'>
-          <h1 className='absolute px-6 py-5 text-[30px]'>{`" ${searchParams.get("q")} " 검색 결과: ${
-            data.length
-          }개`}</h1>
-          <div className='grid grid-cols-4 pt-[110px] px-5 gap-4'>
-            {data?.map((post: Post) => (
-              <Card key={post.id} />
-            ))}
-          </div>
-        </article>
-      </CommonLayout>
-    );
-  }
+  return (
+    <CommonLayout>
+      <article className='max-w-[1200px] mx-auto max-2xl:max-w-[1200px]'>
+        <h1 className='absolute px-6 py-5 text-[30px]'>{`" ${searchParams.get("q")} " 검색 결과: ${
+          data?.length
+        }개`}</h1>
+        <div className='grid grid-cols-4 pt-[110px] px-5 gap-4'>
+          {data?.map((item: Post) => (
+            <Card key={item.contentid} item={item} />
+          ))}
+        </div>
+      </article>
+    </CommonLayout>
+  );
 };
 
 export default Search;
