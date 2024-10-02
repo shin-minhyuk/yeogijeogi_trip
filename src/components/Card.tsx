@@ -24,6 +24,11 @@ export const Card = ({ item }: Props) => {
       />
       <h2 className='text-lg font-semibold'>{item.title}</h2>
       <p className='text-sm'>{item.address}</p>
+      <div>
+        X: {item.mapx}
+        <br />
+        Y: {item.mapy}
+      </div>
     </div>
   );
 };
