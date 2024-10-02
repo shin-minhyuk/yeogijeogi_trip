@@ -4,6 +4,8 @@ import { Card } from '../../components/Card';
 import { Post } from '../../types';
 import { useEffect, useState } from 'react';
 
+const { VITE_ENCODED_API_KEY } = import.meta.env;
+
 const Search = () => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get('q');
@@ -13,7 +15,7 @@ const Search = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `https://apis.data.go.kr/B551011/KorService1/searchKeyword1?serviceKey=rYJ7tKTXAzRPevwZ7vW%2BNtTcqFeJoEb0SR810ZURisQ0E0R9HYzhZa68cWpceD8MijTDlgrB9tlfQu8lA%2BiOyQ%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&keyword=${search}&contentTypeId=12`
+          `https://apis.data.go.kr/B551011/KorService1/searchKeyword1?serviceKey=${VITE_ENCODED_API_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&keyword=${search}&contentTypeId=12`
         );
 
         if (!res.ok) {

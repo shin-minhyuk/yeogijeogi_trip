@@ -16,6 +16,7 @@ const App = () => {
 
     if (!prevModeSetting) {
       localStorage.setItem('THEME-MODE', 'light');
+
       setIsDarkMode(false);
     } else {
       setIsDarkMode(prevModeSetting === 'dark');
