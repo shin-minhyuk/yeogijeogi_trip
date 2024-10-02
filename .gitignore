@@ -23,8 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+.env
 
-.env.development
 
-
- 
+# IDE
+.env
