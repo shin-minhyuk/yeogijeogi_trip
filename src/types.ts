@@ -5,4 +5,6 @@ export type Post = {
   address: string;
   title: string;
   content: string;
+  mapx: number;
+  mapy: number;
 };
