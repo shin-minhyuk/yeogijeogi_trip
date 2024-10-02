@@ -1,22 +1,44 @@
 import CommonLayout from "../layouts/CommonLayout";
-import { useRecoilValue } from 'recoil';
-import { themeState } from '../atoms/atoms';
+import { useRecoilValue } from "recoil";
+import { themeState } from "../atoms/atoms";
+import {
+  fetchDetailData,
+  fetchDetailIntro,
+  fetchDetailInfo,
+} from "../api/fetchDetailData";
+import { useParams } from "react-router-dom";
+import { ParamsType } from "../types";
 
 export default function Content() {
+  const contentId = useParams<ParamsType>();
   const isDarkMode = useRecoilValue(themeState);
-  
+  const [getDetailData] = fetchDetailData(contentId);
+  const [getDetailIntro] = fetchDetailIntro(contentId);
+  const [getDetailInfo] = fetchDetailInfo(contentId);
+  console.log("getDetailData", getDetailData);
+  console.log("getDetailIntro", getDetailIntro);
+  console.log("getDetailInfo", getDetailInfo);
+
+  const formatDateString = (dateString: string): string => {
+    if (dateString.length !== 8) "Invalid date string format";
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(4, 6);
+    const day = dateString.substring(6, 8);
+    return `${year}.${month}.${day}`;
+  };
+
   const onErrorImg: React.ReactEventHandler<HTMLImageElement> = (e) => {
     const target = e.target as HTMLImageElement;
     target.src = "";
   };
   // 다크 모드 스타일
   const darkModeStyles = {
-    divider : "bg-gray2-700"
+    divider: "bg-gray2-700",
   };
 
   // 라이트 모드 스타일
   const lightModeStyles = {
-    divider : "bg-gray2-300"
+    divider: "bg-gray2-300",
   };
   const currentStyles = isDarkMode ? darkModeStyles : lightModeStyles;
 
@@ -33,55 +55,49 @@ export default function Content() {
             />
           </h4>
 
-          <div className={`col-span-2 w-full h-[1px] bg-gray2-300 ${currentStyles.divider}`} />
+          <div
+            className={`col-span-2 w-full h-[1px] bg-gray2-300 ${currentStyles.divider}`}
+          />
           <div className="grid gap-6 grid-cols-2 col-span-2">
             <div className="col-span-2">
               <h6 className="font-medium text-gray2-500 text-base pb-2">
                 제목
               </h6>
-              <p className={`font-medium text-lg`}>
-                제9회 울산울주세계산악영화제
-              </p>
+              <p className={`font-medium text-lg`}></p>
             </div>
             <div className="col-span-2">
               <h6 className="font-medium text-gray2-500 text-base pb-2">
                 상세정보
               </h6>
-              <p className="font-medium text-lg">
-                울산울주세계산악영화제는 산악 영화를 중심으로 자연과 인간의 삶을
-                살펴본다. 시련과 극복, 도전과 실패, 갈등과 공존 등 자연과 더불어
-                살아가는 인간의 다양한 모습을 담고 있으며, 그 속에서 ‘삶’에 대한
-                깊은 성찰을 유도한다. 영화제는 산악인, 영화인, 관객이 함께
-                참여해 서로 배우고 격려하는 공간을 지향하며, 모두가 함께 만드는
-                영화제를 목표로 한다.
-              </p>
+              <p className="font-medium text-lg">{getDetailInfo?.infotext}</p>
             </div>
             <div className="col-span-2">
               <h6 className="font-normal text-gray2-500 text-base pb-2">
                 주소
               </h6>
-              <p className="font-medium text-lg">
-                울산광역시 울주군 알프스온천5길 103-8 산악문화센터
-              </p>
+              <p className="font-medium text-lg"></p>
             </div>
             <div>
               <h6 className="font-medium text-gray2-500 text-base pb-2">
                 문의 및 안내
               </h6>
-              <p className="font-medium text-lg">055-248-6451</p>
+              <p className="font-medium text-lg">
+                {getDetailIntro?.sponsor1tel}
+              </p>
             </div>
             <div>
               <h6 className="font-medium text-gray2-500 text-base pb-2">
                 우편번호
               </h6>
-              <p className="font-medium text-lg">44952</p>
+              <p className="font-medium text-lg"></p>
             </div>
             <div>
               <h6 className="font-medium text-gray2-500 text-base pb-2">
                 기간
               </h6>
               <p className="font-medium text-lg">
-                2024.09.27 ~ 2024.10.01
+                {formatDateString(getDetailIntro?.eventstartdate ?? "")} ~{" "}
+                {formatDateString(getDetailIntro?.eventenddate ?? "")}
               </p>
             </div>
             <div>
@@ -89,7 +105,7 @@ export default function Content() {
                 개최장소
               </h6>
               <p className="font-medium text-lg">
-                영남알프스 복합웰컴센터, 울산대공원, 온라인 상영관
+                {getDetailIntro?.eventplace}
               </p>
             </div>
             <div>
@@ -97,17 +113,16 @@ export default function Content() {
                 입장료
               </h6>
               <p className="font-medium text-lg ">
-                유료 - 영화/페스티벌 프로그램 : 3,000원 / 움프 패스 : 15,000원 /
-                비박 상영 : 10,000원 / 온라인 상영관 : 5,000원
+                {getDetailIntro?.usetimefestival}
               </p>
             </div>
             <div>
               <h6 className="font-medium text-gray2-500 text-base pb-2">
                 홈페이지
               </h6>
-              <p className="font-medium text-lg">
-                https://www.umff.kr/kor/
-              </p>
+              <a href={""}>
+                <p className="font-medium text-lg">{}</p>
+              </a>
             </div>
           </div>
         </div>

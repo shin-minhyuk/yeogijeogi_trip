@@ -42,10 +42,10 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/festival' element={<Festival />} />
-      <Route path='/content' element={<Content />} />
-      <Route path='/search' element={<Search />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/festival" element={<Festival />} />
+      <Route path="/content/:contentId" element={<Content />} />
+      <Route path="/search" element={<Search />} />
     </Routes>
   );
 };

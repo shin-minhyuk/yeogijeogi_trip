@@ -24,7 +24,3 @@ dist-ssr
 *.sw?
 
 .env
-
-
-# IDE
-.env
