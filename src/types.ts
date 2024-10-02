@@ -1,5 +1,3 @@
-import { Params } from "react-router-dom";
-
 export type Post = {
   contentid: number;
   firstimage: string;
@@ -10,7 +8,3 @@ export type Post = {
   mapx: number;
   mapy: number;
 };
-
-export interface ParamsType extends Params {
-  contentId: string;
-}

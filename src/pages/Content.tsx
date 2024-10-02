@@ -1,26 +1,27 @@
-import CommonLayout from "../layouts/CommonLayout";
-import { useRecoilValue } from "recoil";
-import { themeState } from "../atoms/atoms";
-import {
-  fetchDetailData,
-  fetchDetailIntro,
-  fetchDetailInfo,
-} from "../api/fetchDetailData";
-import { useParams } from "react-router-dom";
-import { ParamsType } from "../types";
+import { useSearchParams } from 'react-router-dom';
+import WeatherApp from '../components/WeatherApp/WeatherApp';
+import CommonLayout from '../layouts/CommonLayout';
+import { useRecoilValue } from 'recoil';
+import { themeState } from '../atoms/atoms';
+import { fetchDetailData, fetchDetailIntro, fetchDetailInfo } from '../api/fetchDetailData';
 
 export default function Content() {
-  const contentId = useParams<ParamsType>();
+  const [searchParams] = useSearchParams();
+  const mapY = Number(searchParams.get('mapx'));
+  const mapX = Number(searchParams.get('mapy'));
+  const contentId = searchParams.get('contentId');
   const isDarkMode = useRecoilValue(themeState);
   const [getDetailData] = fetchDetailData(contentId);
   const [getDetailIntro] = fetchDetailIntro(contentId);
   const [getDetailInfo] = fetchDetailInfo(contentId);
-  console.log("getDetailData", getDetailData);
-  console.log("getDetailIntro", getDetailIntro);
-  console.log("getDetailInfo", getDetailInfo);
+
+  console.log('getDetailData', getDetailData);
+  console.log('getDetailIntro', getDetailIntro);
+  console.log('getDetailInfo', getDetailInfo);
+  console.log(mapX, mapY, contentId);
 
   const formatDateString = (dateString: string): string => {
-    if (dateString.length !== 8) "Invalid date string format";
+    if (dateString.length !== 8) 'Invalid date string format';
     const year = dateString.substring(0, 4);
     const month = dateString.substring(4, 6);
     const day = dateString.substring(6, 8);
@@ -29,16 +30,16 @@ export default function Content() {
 
   const onErrorImg: React.ReactEventHandler<HTMLImageElement> = (e) => {
     const target = e.target as HTMLImageElement;
-    target.src = "";
+    target.src = '';
   };
   // 다크 모드 스타일
   const darkModeStyles = {
-    divider: "bg-gray2-700",
+    divider: 'bg-gray2-700',
   };
 
   // 라이트 모드 스타일
   const lightModeStyles = {
-    divider: "bg-gray2-300",
+    divider: 'bg-gray2-300',
   };
   const currentStyles = isDarkMode ? darkModeStyles : lightModeStyles;
 
@@ -55,78 +56,53 @@ export default function Content() {
             />
           </h4>
 
-          <div
-            className={`col-span-2 w-full h-[1px] bg-gray2-300 ${currentStyles.divider}`}
-          />
+          <div className={`col-span-2 w-full h-[1px] bg-gray2-300 ${currentStyles.divider}`} />
           <div className="grid gap-6 grid-cols-2 col-span-2">
             <div className="col-span-2">
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                제목
-              </h6>
+              <h6 className="font-medium text-gray2-500 text-base pb-2">제목</h6>
               <p className={`font-medium text-lg`}></p>
             </div>
             <div className="col-span-2">
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                상세정보
-              </h6>
+              <h6 className="font-medium text-gray2-500 text-base pb-2">상세정보</h6>
               <p className="font-medium text-lg">{getDetailInfo?.infotext}</p>
             </div>
             <div className="col-span-2">
-              <h6 className="font-normal text-gray2-500 text-base pb-2">
-                주소
-              </h6>
+              <h6 className="font-normal text-gray2-500 text-base pb-2">주소</h6>
               <p className="font-medium text-lg"></p>
             </div>
             <div>
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                문의 및 안내
-              </h6>
-              <p className="font-medium text-lg">
-                {getDetailIntro?.sponsor1tel}
-              </p>
+              <h6 className="font-medium text-gray2-500 text-base pb-2">문의 및 안내</h6>
+              <p className="font-medium text-lg">{getDetailIntro?.sponsor1tel}</p>
             </div>
             <div>
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                우편번호
-              </h6>
+              <h6 className="font-medium text-gray2-500 text-base pb-2">우편번호</h6>
               <p className="font-medium text-lg"></p>
             </div>
             <div>
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                기간
-              </h6>
+              <h6 className="font-medium text-gray2-500 text-base pb-2">기간</h6>
               <p className="font-medium text-lg">
-                {formatDateString(getDetailIntro?.eventstartdate ?? "")} ~{" "}
-                {formatDateString(getDetailIntro?.eventenddate ?? "")}
+                {formatDateString(getDetailIntro?.eventstartdate ?? '')} ~{' '}
+                {formatDateString(getDetailIntro?.eventenddate ?? '')}
               </p>
             </div>
             <div>
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                개최장소
-              </h6>
-              <p className="font-medium text-lg">
-                {getDetailIntro?.eventplace}
-              </p>
+              <h6 className="font-medium text-gray2-500 text-base pb-2">개최장소</h6>
+              <p className="font-medium text-lg">{getDetailIntro?.eventplace}</p>
             </div>
             <div>
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                입장료
-              </h6>
-              <p className="font-medium text-lg ">
-                {getDetailIntro?.usetimefestival}
-              </p>
+              <h6 className="font-medium text-gray2-500 text-base pb-2">입장료</h6>
+              <p className="font-medium text-lg ">{getDetailIntro?.usetimefestival}</p>
             </div>
             <div>
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                홈페이지
-              </h6>
-              <a href={""}>
+              <h6 className="font-medium text-gray2-500 text-base pb-2">홈페이지</h6>
+              <a href={''}>
                 <p className="font-medium text-lg">{}</p>
               </a>
             </div>
           </div>
         </div>
       </section>
+      <WeatherApp mapX={mapX} mapY={mapY} />
     </CommonLayout>
   );
 }
