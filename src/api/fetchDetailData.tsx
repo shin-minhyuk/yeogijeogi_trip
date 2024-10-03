@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getData } from ".";
-import { ParamsType } from "../types";
 const VITE_API_KEY = import.meta.env.VITE_API_KEY;
 
 interface getDetailCommon1DataItem {
@@ -232,6 +231,10 @@ interface TourismResponse {
       resultMsg: string;
     };
   };
+}
+
+interface ParamsType {
+  contentId: string;
 }
 
 export function fetchDetailData(contentId: ParamsType) {
