@@ -230,7 +230,7 @@ interface TourismResponse {
   body: TourismBody;
 }
 interface TourismAxios {
-  response?: TourismResponse | undefined;
+  response?: TourismResponse;
 }
 
 export function fetchDetailData(
@@ -249,7 +249,12 @@ export function fetchDetailData(
         const axiosResponse: TourismResponse | undefined =
           await axiosData?.response;
         console.log(axiosResponse);
-        if (axiosResponse) {
+        if (
+          axiosResponse &&
+          axiosResponse.body.items &&
+          axiosResponse.body.items.item &&
+          axiosResponse.body.items.item.length > 0
+        ) {
           const data = await axiosResponse.body.items.item[0];
           setValue(data);
         } else {
@@ -261,7 +266,7 @@ export function fetchDetailData(
       }
     };
     getDetailCommon();
-  }, [value]);
+  }, [contentId]);
 
   return [value];
 }
@@ -280,7 +285,12 @@ export function fetchDetailIntro(
         );
         const axiosResponse: TourismResponse | undefined =
           await axiosData?.response;
-        if (axiosResponse) {
+        if (
+          axiosResponse &&
+          axiosResponse.body.items &&
+          axiosResponse.body.items.item &&
+          axiosResponse.body.items.item.length > 0
+        ) {
           const data = await axiosResponse.body.items.item[0];
           setValue(data);
         } else {
@@ -312,7 +322,12 @@ export function fetchDetailInfo(
         );
         const axiosResponse: TourismResponse | undefined =
           await axiosData?.response;
-        if (axiosResponse) {
+        if (
+          axiosResponse &&
+          axiosResponse.body.items &&
+          axiosResponse.body.items.item &&
+          axiosResponse.body.items.item.length > 0
+        ) {
           const data = await axiosResponse.body.items.item[0];
           setValue(data);
         } else {

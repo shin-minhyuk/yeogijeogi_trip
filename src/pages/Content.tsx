@@ -26,13 +26,15 @@ export default function Content() {
   const [getDetailIntro] = fetchDetailIntro(contentId, contentTypeId);
   const [getDetailInfo] = fetchDetailInfo(contentId, contentTypeId);
   let openDateTitle: openDateInfo[] | null = null;
-  const formatDateString = (dateString: string): string => {
-    if (dateString.length !== 8) "Invalid date string format";
-    const year = dateString.substring(0, 4);
-    const month = dateString.substring(4, 6);
-    const day = dateString.substring(6, 8);
+
+  const formatDateString = (dateString: string | undefined): string => {
+    if (!dateString && dateString?.length !== 8) "Invalid date string format";
+    const year = dateString?.substring(0, 4);
+    const month = dateString?.substring(4, 6);
+    const day = dateString?.substring(6, 8);
     return `${year}.${month}.${day}`;
   };
+
   switch (contentTypeId) {
     case "12":
       openDateTitle = [
@@ -57,12 +59,14 @@ export default function Content() {
         { name: "주소", data: getDetailData?.addr1 },
         { name: "우편번호", data: getDetailData?.zipcode },
         { name: "문의 및 안내", data: getDetailIntro?.infocenter },
-        { name: "기간", data: getDetailIntro?.restdate },
-        { name: "가이드", data: getDetailIntro?.expguide },
-        { name: "수용인원", data: getDetailIntro?.accomcount },
-        { name: "개장시간", data: getDetailIntro?.usetime },
-        { name: "주차", data: getDetailIntro?.parking },
-        { name: "반려동물입장", data: getDetailIntro?.chkpet },
+        { name: "개장시간", data: getDetailIntro?.playtime },
+        { name: "입장료", data: getDetailIntro?.usetimefestival },
+        {
+          name: "기간",
+          data: `${formatDateString(
+            getDetailIntro?.eventstartdate
+          )} ~ ${formatDateString(getDetailIntro?.eventenddate)}`,
+        },
         { name: "홈페이지", data: getDetailData?.homepage },
       ];
       break;
@@ -103,14 +107,20 @@ export default function Content() {
           <div
             className={`col-span-2 w-full h-[1px] bg-gray2-300 ${currentStyles.divider}`}
           />
-          {openDateTitle?.map((info) => (
-            <div key={info.name}>
-              <h6 className="font-medium text-gray2-500 text-base pb-2">
-                {info.name}
-              </h6>
-              <p className={`font-medium text-lg`}>{info.data}</p>
-            </div>
-          ))}
+          {openDateTitle?.map((info) => {
+            console.log(info);
+            if (info.data === undefined) return;
+            else {
+              return (
+                <div key={info.name}>
+                  <h6 className="font-medium text-gray2-500 text-base pb-2">
+                    {info.name}
+                  </h6>
+                  <p className={`font-medium text-lg`}>{info.data}</p>
+                </div>
+              );
+            }
+          })}
 
           <div className="grid gap-6 grid-cols-2 col-span-2">
             <div className="col-span-2"></div>

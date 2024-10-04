@@ -3,18 +3,10 @@ const VITE_KORSERVICE_URL = import.meta.env.VITE_KORSERVICE_URL;
 
 module.exports = function (app) {
   app.use(
-    createProxyMiddleware(
-      [
-        "/areaBasedSyncList1",
-        "/detailCommon1",
-        "/detailIntro1",
-        "/detailInfo1",
-      ],
-      {
-        target: VITE_KORSERVICE_URL,
-        changeOrigin: true,
-      }
-    )
+    createProxyMiddleware(["/detailCommon1", "/detailIntro1", "/detailInfo1"], {
+      target: VITE_KORSERVICE_URL,
+      changeOrigin: true,
+    })
   );
 };
 
