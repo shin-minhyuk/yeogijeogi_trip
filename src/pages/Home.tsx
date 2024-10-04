@@ -1,10 +1,18 @@
+import { useEffect, useState } from "react";
 import CommonLayout from "../layouts/CommonLayout";
+import { Post } from "../types";
+import { Card } from "../components/Card";
+import Tour from "./Tour";
+import Festival from "./Festival";
+const { VITE_ENCODING_KEY } = import.meta.env;
 
 export default function Home() {
   return (
     <CommonLayout>
-      <h1>Home</h1>
-      <div className="h-[3000px]">12</div>
+      <p>관광지</p>
+      <Tour />
+      <p>축제</p>
+      <Festival />
     </CommonLayout>
   );
 }
