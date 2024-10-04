@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import { Post } from '../types';
+import { useNavigate } from "react-router-dom";
+import { Post } from "../types";
 
 type Props = {
   item: Post;
@@ -10,7 +10,7 @@ export const Card = ({ item }: Props) => {
 
   const onClickCard = () => {
     navigate(
-      `/content/?contentId=${item.contentid}&title=${item.title}&content_id=${item.contentid}&mapx=${item.mapx}&mapy=${item.mapy}`
+      `/content/?title=${item.title}&content_id=${item.contentid}&content_type_id=${item.contenttypeid}&mapx=${item.mapx}&mapy=${item.mapy}`
     );
   };
 
@@ -21,7 +21,7 @@ export const Card = ({ item }: Props) => {
     >
       <img
         className="w-full h-[200px] bg-gray2-500"
-        src={item.firstimage !== '' ? item.firstimage : undefined}
+        src={item.firstimage !== "" ? item.firstimage : undefined}
         alt={item.title}
       />
       <h2 className="text-lg font-semibold">{item.title}</h2>

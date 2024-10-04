@@ -9,16 +9,14 @@ interface APIResponse<T> {
 }
 const client: Axios = axios.create({
   baseURL: VITE_KORSERVICE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 export const getData = async <T>(url: string, config?: AxiosRequestConfig) => {
   try {
     const response = await client.get<APIResponse<T>>(url, config);
     if (response && response.data) {
-      return response.data;
+      const data = response.data;
+      return data;
     } else {
       console.error("No data returned in the response");
       return undefined;
