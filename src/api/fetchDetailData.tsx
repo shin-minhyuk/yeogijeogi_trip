@@ -239,17 +239,18 @@ export function fetchDetailData(
 ) {
   const [value, setValue] = useState<getDetailCommon1DataItem | null>(null);
   const API_URL = `/detailCommon1?MobileOS=ETC&MobileApp=AppTest&_type=json&contentId=${contentId}&contentTypeId=${contentTypeId}&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&serviceKey=${VITE_ENCODING_KEY}`;
-
+  console.log(contentId);
   useEffect(() => {
     const getDetailCommon = async () => {
       try {
         const axiosData: TourismAxios | undefined = await getData<TourismAxios>(
           API_URL
         );
-        const axiosResponse: TourismResponse | undefined = axiosData?.response;
+        const axiosResponse: TourismResponse | undefined =
+          await axiosData?.response;
         console.log(axiosResponse);
         if (axiosResponse) {
-          const data = axiosResponse.body.items.item[0];
+          const data = await axiosResponse.body.items.item[0];
           setValue(data);
         } else {
           console.error("No data returned");
@@ -260,7 +261,7 @@ export function fetchDetailData(
       }
     };
     getDetailCommon();
-  }, [contentId]);
+  }, [value]);
 
   return [value];
 }
@@ -277,9 +278,10 @@ export function fetchDetailIntro(
         const axiosData: TourismAxios | undefined = await getData<TourismAxios>(
           API_URL
         );
-        const axiosResponse: TourismResponse | undefined = axiosData?.response;
+        const axiosResponse: TourismResponse | undefined =
+          await axiosData?.response;
         if (axiosResponse) {
-          const data = axiosResponse.body.items.item[0];
+          const data = await axiosResponse.body.items.item[0];
           setValue(data);
         } else {
           console.error("No data returned");
@@ -308,9 +310,10 @@ export function fetchDetailInfo(
         const axiosData: TourismAxios | undefined = await getData<TourismAxios>(
           API_URL
         );
-        const axiosResponse: TourismResponse | undefined = axiosData?.response;
+        const axiosResponse: TourismResponse | undefined =
+          await axiosData?.response;
         if (axiosResponse) {
-          const data = axiosResponse.body.items.item[0];
+          const data = await axiosResponse.body.items.item[0];
           setValue(data);
         } else {
           console.error("No data returned");

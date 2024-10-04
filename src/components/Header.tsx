@@ -11,7 +11,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { title: "메인화면", path: "/" },
-  { title: "관광지", path: "/content" },
+  { title: "관광지", path: "/tour" },
   { title: "축제/공연/행사", path: "/festival" },
 ];
 
@@ -40,20 +40,32 @@ export default function Header() {
 
   return (
     <header className={`fixed top-0 left-0 w-full ${currentStyles.header}`}>
-      <div className={`flex h-[80px] justify-between items-center px-[5%] border-b ${currentStyles.div}`}>
-        <h1 className={`text-2xl font-[700] hover:font-extrabold hover:text-[26px] ${currentStyles.h1}`}>
+      <div
+        className={`flex h-[80px] justify-between items-center px-[5%] border-b ${currentStyles.div}`}
+      >
+        <h1
+          className={`text-2xl font-[700] hover:font-extrabold hover:text-[26px] ${currentStyles.h1}`}
+        >
           <Link to={"/"}>여기저기</Link>
         </h1>
-        <div className='flex gap-4'>
+        <div className="flex gap-4">
           <SearchBtn />
           <ToggleThemeBtn />
         </div>
       </div>
       <nav>
-        <ul className={`h-[60px] flex justify-center items-center font-[700] shadow-md ${currentStyles.ul}`}>
+        <ul
+          className={`h-[60px] flex justify-center items-center font-[700] shadow-md ${currentStyles.ul}`}
+        >
           {navItems.map((item) => (
-            <li key={item.title} className={`w-[140px] h-full ${currentStyles.li}`}>
-              <Link className='flex w-full h-full justify-center items-center' to={item.path}>
+            <li
+              key={item.title}
+              className={`w-[140px] h-full ${currentStyles.li}`}
+            >
+              <Link
+                className="flex w-full h-full justify-center items-center"
+                to={item.path}
+              >
                 {item.title}
               </Link>
             </li>
