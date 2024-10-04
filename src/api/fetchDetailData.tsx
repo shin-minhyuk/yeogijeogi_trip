@@ -1,32 +1,32 @@
 import { useEffect, useState } from "react";
 import { getData } from ".";
-const VITE_API_KEY = import.meta.env.VITE_API_KEY;
+const VITE_ENCODING_KEY = import.meta.env.VITE_ENCODING_KEY;
 
 interface getDetailCommon1DataItem {
-  overview: "string";
-  contentid: "string";
-  sigungucode: "string";
-  cat1: "string";
-  cat2: "string";
-  cat3: "string";
-  addr1: "string";
-  addr2: "string";
-  zipcode: "string";
-  mapx: "string";
-  mapy: "string";
-  mlevel: "string";
-  cpyrhtDivCd: "string";
-  contenttypeid: "string";
-  booktour: "string";
-  createdtime: "string";
-  homepage: "string";
-  modifiedtime: "string";
-  tel: "string";
-  telname: "string";
-  title: "string";
-  firstimage: "string";
-  firstimage2: "string";
-  areacode: "string";
+  overview?: "string";
+  contentid?: "string";
+  sigungucode?: "string";
+  cat1?: "string";
+  cat2?: "string";
+  cat3?: "string";
+  addr1?: "string";
+  addr2?: "string";
+  zipcode?: "string";
+  mapx?: "string";
+  mapy?: "string";
+  mlevel?: "string";
+  cpyrhtDivCd?: "string";
+  contenttypeid?: "string";
+  booktour?: "string";
+  createdtime?: "string";
+  homepage?: "string";
+  modifiedtime?: "string";
+  tel?: "string";
+  telname?: "string";
+  title?: "string";
+  firstimage?: "string";
+  firstimage2?: "string";
+  areacode?: "string";
 }
 interface getDetailIntroItem {
   chkcreditcardculture: "string";
@@ -213,48 +213,44 @@ interface getDeatilInfoItem {
   cpyrhtDivCd4: "string";
   cpyrhtDivCd5: "string";
 }
-interface TourismResponse {
-  response: {
-    body: {
-      items: {
-        item:
-          | getDetailCommon1DataItem[]
-          | getDetailIntroItem[]
-          | getDeatilInfoItem[];
-      };
-      numOfRows: number;
-      pageNo: number;
-      totalCount: number;
-    };
-    header: {
-      resultCode: string;
-      resultMsg: string;
-    };
+interface TourismBody {
+  items: {
+    item:
+      | getDetailCommon1DataItem[]
+      | getDetailIntroItem[]
+      | getDeatilInfoItem[];
   };
+  numOfRows: number;
+  pageNo: number;
+  totalCount: number;
+}
+interface TourismResponse {
+  header: {
+    resultCode: string;
+    resultMsg: string;
+  };
+  body: TourismBody;
+}
+interface TourismAxios {
+  response: TourismResponse;
 }
 
-interface ParamsType {
-  contentId: string;
-}
-
-export function fetchDetailData(contentId: ParamsType) {
-  console.log(contentId.contentId);
+export function fetchDetailData(
+  contentId: string | null,
+  contentTypeId: string | null
+) {
   const [value, setValue] = useState<getDetailCommon1DataItem | null>(null);
-  const API_URL = `/detailCommon1?MobileOS=ETC&MobileApp=AppTes&_type=json&contentId=${contentId.contentId}&contentTypeId=15&serviceKey=${VITE_API_KEY}`;
+  const API_URL = `/detailCommon1?MobileOS=ETC&MobileApp=AppTest&_type=json&contentId=${contentId}&contentTypeId=${contentTypeId}&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&serviceKey=${VITE_ENCODING_KEY}`;
+
   useEffect(() => {
     const getDetailCommon = async () => {
       try {
-        const axiosResponse = await getData<TourismResponse>(API_URL);
-        if (
-          axiosResponse &&
-          axiosResponse.response &&
-          axiosResponse.response.body &&
-          Array.isArray(axiosResponse?.response?.body?.items?.item) &&
-          axiosResponse.response.body.items.item.length > 0
-        ) {
-          const data = axiosResponse.response.body.items.item[0];
+        const axiosData: TourismAxios = await getData<TourismAxios>(API_URL);
+        const axiosResponse: TourismResponse = axiosData?.response;
+        console.log(axiosResponse);
+        if (axiosResponse) {
+          const data = axiosResponse.body.items.item[0];
           setValue(data);
-          console.log(data);
         } else {
           console.error("No data returned");
         }
@@ -264,25 +260,24 @@ export function fetchDetailData(contentId: ParamsType) {
       }
     };
     getDetailCommon();
-  }, [API_URL]);
+  }, [contentId]);
 
   return [value];
 }
 
-export function fetchDetailIntro(contentId: ParamsType) {
+export function fetchDetailIntro(
+  contentId: string | null,
+  contentTypeId: string | null
+) {
   const [value, setValue] = useState<getDetailIntroItem | null>(null);
-  const API_URL = `/detailIntro1?MobileOS=ETC&MobileApp=AppTes&_type=json&contentId=${contentId}&contentTypeId=15&&serviceKey=${VITE_API_KEY}`;
+  const API_URL = `/detailIntro1?MobileOS=ETC&MobileApp=AppTest&contentId=${contentId}&contentTypeId=${contentTypeId}&serviceKey=${VITE_ENCODING_KEY}&_type=json`;
   useEffect(() => {
     const getDetailIntro = async () => {
       try {
-        const axiosResponse = await getData<TourismResponse>(API_URL);
-        if (
-          axiosResponse &&
-          axiosResponse.response &&
-          axiosResponse.response.body &&
-          axiosResponse.response.body.items.item.length > 0
-        ) {
-          const data = axiosResponse.response.body.items.item[0];
+        const axiosData = await getData<TourismAxios>(API_URL);
+        const axiosResponse = await axiosData?.response;
+        if (axiosResponse) {
+          const data = await axiosResponse.body.items.item[0];
           setValue(data);
         } else {
           console.error("No data returned");
@@ -293,25 +288,25 @@ export function fetchDetailIntro(contentId: ParamsType) {
       }
     };
     getDetailIntro();
-  }, [API_URL]);
+  }, [contentId]);
 
   return [value];
 }
 
-export function fetchDetailInfo(contentId: ParamsType) {
+export function fetchDetailInfo(
+  contentId: string | null,
+  contentTypeId: string | null
+) {
   const [value, setValue] = useState<getDeatilInfoItem | null>(null);
-  const API_URL = `/detailInfo1?MobileOS=ETC&MobileApp=AppTes&_type=json&contentId=${contentId}&contentTypeId=15&&serviceKey=${VITE_API_KEY}`;
+  const API_URL = `/detailInfo1?MobileOS=ETC&MobileApp=AppTest&contentId=${contentId}&contentTypeId=${contentTypeId}&serviceKey=${VITE_ENCODING_KEY}&_type=json`;
+
   useEffect(() => {
-    const getDetailIntro = async () => {
+    const getDetailInfo = async () => {
       try {
-        const axiosResponse = await getData<TourismResponse>(API_URL);
-        if (
-          axiosResponse &&
-          axiosResponse.response &&
-          axiosResponse.response.body &&
-          axiosResponse.response.body.items.item.length > 0
-        ) {
-          const data = axiosResponse.response.body.items.item[0];
+        const axiosData = await getData<TourismAxios>(API_URL);
+        const axiosResponse = axiosData?.response;
+        if (axiosResponse) {
+          const data = await axiosResponse.body.items.item[0];
           setValue(data);
         } else {
           console.error("No data returned");
@@ -321,8 +316,8 @@ export function fetchDetailInfo(contentId: ParamsType) {
         throw new Error();
       }
     };
-    getDetailIntro();
-  }, [API_URL]);
+    getDetailInfo();
+  }, [contentId]);
 
   return [value];
 }

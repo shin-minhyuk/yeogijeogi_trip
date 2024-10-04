@@ -1,5 +1,6 @@
-export const API_KEY = import.meta.env.VITE_API_KEY;
-export const BASE_URL = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0';
+export const VITE_ENCODING_KEY = import.meta.env.VITE_ENCODING_KEY;
+export const BASE_URL =
+  "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0";
 
 // BaseTime 계산 함수
 export const getBaseTime = (today: Date): string => {
@@ -16,7 +17,7 @@ export const getBaseTime = (today: Date): string => {
     return prev;
   }, 2);
 
-  return `${String(baseTime).padStart(2, '0')}00`;
+  return `${String(baseTime).padStart(2, "0")}00`;
 };
 
 // BaseDate 계산 함수
@@ -30,8 +31,8 @@ export const getBaseDate = (today: Date): string => {
   }
 
   const year = current.getFullYear();
-  const month = String(current.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-  const date = String(current.getDate()).padStart(2, '0');
+  const month = String(current.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
+  const date = String(current.getDate()).padStart(2, "0");
 
   return `${year}${month}${date}`; // YYYYMMDD 형식으로 반환
 };
@@ -56,11 +57,11 @@ export const getPageNo = (today: Date): number => {
 
 // 날씨 상태를 아이콘 상태로 매핑하는 함수
 export const mapWeatherToIconState = (weather: string) => {
-  if (weather.includes('맑음')) return '맑음';
-  if (weather.includes('흐림') || weather.includes('구름')) return '흐림';
-  if (weather.includes('비')) return '비';
-  if (weather.includes('눈')) return '눈';
+  if (weather.includes("맑음")) return "맑음";
+  if (weather.includes("흐림") || weather.includes("구름")) return "흐림";
+  if (weather.includes("비")) return "비";
+  if (weather.includes("눈")) return "눈";
 
   // 기본값
-  return '맑음';
+  return "맑음";
 };
