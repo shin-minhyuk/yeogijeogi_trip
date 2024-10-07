@@ -3,15 +3,17 @@ import WeatherApp from "../components/WeatherApp/WeatherApp";
 import CommonLayout from "../layouts/CommonLayout";
 import { useRecoilValue } from "recoil";
 import { themeState } from "../atoms/atoms";
+import HtmlRenderer from "../components/HtmlRenderer";
 import {
   fetchDetailData,
   fetchDetailIntro,
   fetchDetailInfo,
 } from "../api/fetchDetailData";
+import { ReactNode } from "react";
 
 interface openDateInfo {
   name: string | undefined | null;
-  data: string | undefined | null;
+  data: ReactNode;
 }
 
 export default function Content() {
@@ -38,36 +40,90 @@ export default function Content() {
   switch (contentTypeId) {
     case "12":
       openDateTitle = [
-        { name: "제목", data: title },
-        { name: "상세정보", data: getDetailData?.overview },
-        { name: "주소", data: getDetailData?.addr1 },
-        { name: "우편번호", data: getDetailData?.zipcode },
-        { name: "문의 및 안내", data: getDetailIntro?.infocenter },
-        { name: "휴일", data: getDetailIntro?.restdate },
-        { name: "가이드", data: getDetailIntro?.expguide },
-        { name: "수용인원", data: getDetailIntro?.accomcount },
-        { name: "개장시간", data: getDetailIntro?.usetime },
-        { name: "주차", data: getDetailIntro?.parking },
-        { name: "반려동물입장", data: getDetailIntro?.chkpet },
-        { name: "홈페이지", data: getDetailData?.homepage },
+        { name: "제목", data: <HtmlRenderer htmlString={title!} /> },
+        {
+          name: "상세정보",
+          data: <HtmlRenderer htmlString={getDetailData?.overview!} />,
+        },
+        {
+          name: "주소",
+          data: <HtmlRenderer htmlString={getDetailData?.addr1!} />,
+        },
+        {
+          name: "우편번호",
+          data: <HtmlRenderer htmlString={getDetailData?.zipcode!} />,
+        },
+        {
+          name: "문의 및 안내",
+          data: <HtmlRenderer htmlString={getDetailIntro?.infocenter!} />,
+        },
+        {
+          name: "휴일",
+          data: <HtmlRenderer htmlString={getDetailIntro?.restdate!} />,
+        },
+        {
+          name: "가이드",
+          data: <HtmlRenderer htmlString={getDetailIntro?.expguide!} />,
+        },
+        {
+          name: "수용인원",
+          data: <HtmlRenderer htmlString={getDetailIntro?.accomcount!} />,
+        },
+        {
+          name: "개장시간",
+          data: <HtmlRenderer htmlString={getDetailIntro?.usetime!} />,
+        },
+        {
+          name: "주차",
+          data: <HtmlRenderer htmlString={getDetailIntro?.parking!} />,
+        },
+        {
+          name: "반려동물입장",
+          data: <HtmlRenderer htmlString={getDetailIntro?.chkpet!} />,
+        },
+        {
+          name: "홈페이지",
+          data: <HtmlRenderer htmlString={getDetailData?.homepage!} />,
+        },
       ];
       break;
     case "15":
       openDateTitle = [
-        { name: "제목", data: title },
-        { name: "상세정보", data: getDetailData?.overview },
-        { name: "주소", data: getDetailData?.addr1 },
-        { name: "우편번호", data: getDetailData?.zipcode },
-        { name: "문의 및 안내", data: getDetailIntro?.infocenter },
-        { name: "개장시간", data: getDetailIntro?.playtime },
-        { name: "입장료", data: getDetailIntro?.usetimefestival },
+        { name: "제목", data: <HtmlRenderer htmlString={title!} /> },
+        {
+          name: "상세정보",
+          data: <HtmlRenderer htmlString={getDetailData?.overview!} />,
+        },
+        {
+          name: "주소",
+          data: <HtmlRenderer htmlString={getDetailData?.addr1!} />,
+        },
+        {
+          name: "우편번호",
+          data: <HtmlRenderer htmlString={getDetailData?.zipcode!} />,
+        },
+        {
+          name: "문의 및 안내",
+          data: <HtmlRenderer htmlString={getDetailIntro?.infocenter!} />,
+        },
+        {
+          name: "개장시간",
+          data: <HtmlRenderer htmlString={getDetailIntro?.playtime!} />,
+        },
+        {
+          name: "입장료",
+          data: <HtmlRenderer htmlString={getDetailIntro?.usetimefestival!} />,
+        },
         {
           name: "기간",
           data: `${formatDateString(
             getDetailIntro?.eventstartdate
           )} ~ ${formatDateString(getDetailIntro?.eventenddate)}`,
         },
-        { name: "홈페이지", data: getDetailData?.homepage },
+        {
+          name: "홈페이지",
+          data: <HtmlRenderer htmlString={getDetailData?.homepage!} />,
+        },
       ];
       break;
     default:
